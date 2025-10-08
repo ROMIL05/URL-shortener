@@ -6,15 +6,15 @@ import ShortUrlResult from '../../components/url/ShortUrlResult';
 
 const HomePage = () => {
 	const toast = useRef(null);
-	const [shortUrl, setShortUrl] = useState('');
+	const [url, setUrl] = useState('');
 
 	const handleShorten = (url, error) => {
 		if (url) {
-			setShortUrl(url);
+			setUrl(url);
 			toast.current.show({
 				severity: 'success',
-				summary: 'URL Shortened',
-				detail: 'Your short URL is ready!',
+				summary: 'URL generated',
+				detail: 'URL generated successfully!',
 				life: 3000,
 			});
 		} else {
@@ -28,7 +28,7 @@ const HomePage = () => {
 	};
 
 	const handleCopy = () => {
-		navigator.clipboard.writeText(shortUrl);
+		navigator.clipboard.writeText(url);
 		toast.current.show({
 			severity: 'info',
 			summary: 'Copied!',
@@ -46,7 +46,7 @@ const HomePage = () => {
 					<span className="font-semibold text-lg">URL Shortener</span>
 				</div>
 				<UrlShortenerForm onShorten={handleShorten} />
-				<ShortUrlResult shortUrl={shortUrl} onCopy={handleCopy} />
+				<ShortUrlResult url={url} onCopy={handleCopy} />
 			</div>
 		</div>
 	);

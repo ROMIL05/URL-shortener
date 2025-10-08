@@ -18,11 +18,13 @@ async function generateShortUrl(req, res) {
 			});
 		}
 
-		let shortCode = generateShortCode(5);
+		const maxShortLength = Math.max(1, originalUrl.length - BASE_URL.length - 5);
+
+		let shortCode = generateShortCode(Math.min(5, maxShortLength));
 		let shortUrl = `${BASE_URL}${shortCode}.tiny`;
 
 		while (await urlModel.findOne({ shortUrl })) {
-			shortCode = generateShortCode(5);
+			shortCode = generateShortCode(Math.min(5, maxShortLength));
 			shortUrl = `${BASE_URL}${shortCode}.tiny`;
 		}
 
