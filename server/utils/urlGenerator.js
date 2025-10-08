@@ -1,10 +1,10 @@
-function generateRandomUrl(length = 8) {
-	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+';
-	let password = '';
+function generateShortCode(length = 8) {
+	const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let result = '';
 	for (let i = 0; i < length; i++) {
-		password += chars.charAt(Math.floor(Math.random() * chars.length));
+		result += chars.charAt(Math.floor(Math.random() * chars.length));
 	}
-	return password;
+	return result;
 }
 
-module.exports = { generateRandomUrl };
+module.exports = { generateShortCode };
