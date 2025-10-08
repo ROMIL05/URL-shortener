@@ -7,4 +7,4 @@ function generateShortCode(length = 8) {
 	return result;
 }
 
-module.exports = { generateShortCode };
+module.exports = generateShortCode;

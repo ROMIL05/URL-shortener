@@ -1,5 +1,6 @@
 const urlModel = require('../models/url.model');
 const generateShortCode = require('../utils/urlGenerator');
+const BASE_URL = 'http://';
 
 async function generateShortUrl(req, res) {
 	try {
@@ -9,20 +10,20 @@ async function generateShortUrl(req, res) {
 			return res.status(400).json({ message: 'Original URL is required' });
 		}
 
-		let existing = await urlModel.findOne({ originalUrl });
-		if (existing) {
+		let existingOriginal = await urlModel.findOne({ originalUrl });
+		if (existingOriginal) {
 			return res.status(200).json({
 				message: 'URL already exists',
-				shortUrl: existing.shortUrl,
+				shortUrl: existingOriginal.shortUrl,
 			});
 		}
 
-		let shortCode = generateShortCode(7);
-		let shortUrl = `${BASE_URL}/${shortCode}`;
+		let shortCode = generateShortCode(5);
+		let shortUrl = `${BASE_URL}${shortCode}.tiny`;
 
 		while (await urlModel.findOne({ shortUrl })) {
-			shortCode = generateShortCode(7);
-			shortUrl = `${BASE_URL}/${shortCode}`;
+			shortCode = generateShortCode(5);
+			shortUrl = `${BASE_URL}${shortCode}.tiny`;
 		}
 
 		const newUrl = new urlModel({ originalUrl, shortUrl });
@@ -41,6 +42,34 @@ async function generateShortUrl(req, res) {
 	}
 }
 
+async function generateOriginalUrl(req, res) {
+	try {
+		const { shortUrl } = req.body;
+
+		if (!shortUrl) {
+			return res.status(400).json({ message: 'Short URL is required' });
+		}
+
+		const existing = await urlModel.findOne({ shortUrl });
+
+		if (!existing) {
+			return res.status(404).json({ message: 'Short URL not found' });
+		}
+
+		return res.status(200).json({
+			message: 'Original URL found',
+			originalUrl: existing.originalUrl,
+		});
+	} catch (error) {
+		console.error('Error in generateOriginalUrl:', error);
+		return res.status(500).json({
+			message: 'Internal Server Error',
+			error: error.message,
+		});
+	}
+}
+
 module.exports = {
 	generateShortUrl,
+	generateOriginalUrl,
 };

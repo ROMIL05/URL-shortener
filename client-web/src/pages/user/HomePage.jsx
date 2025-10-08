@@ -32,7 +32,7 @@ const HomePage = () => {
 		toast.current.show({
 			severity: 'info',
 			summary: 'Copied!',
-			detail: 'Short URL copied to clipboard',
+			detail: 'URL copied to clipboard',
 			life: 2000,
 		});
 	};

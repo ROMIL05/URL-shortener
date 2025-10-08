@@ -19,7 +19,7 @@ const ShortUrlResult = ({ shortUrl, onCopy }) => {
 			<Button
 				icon={<Copy size={16} />}
 				onClick={onCopy}
-				className="p-button-text p-button-sm"
+				className="bg-transparent border border-none text-primary"
 				tooltip="Copy"
 			/>
 		</div>
